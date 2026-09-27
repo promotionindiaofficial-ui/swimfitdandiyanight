@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="SwimFit presents Dandiya Night 3.0 registration" />
+  <title>SwimFit Presents Dandiya Night 3.0</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <style>
+    :root { font-family: Arial, sans-serif; color: #24122d; background: #160b29; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; padding: 22px; display: grid; place-items: center; background: radial-gradient(circle at top, #793a9c, #24113d 58%, #10071c); }
+    .card { width: min(100%, 560px); overflow: hidden; background: #fffaf2; border: 3px solid #f1bd55; border-radius: 22px; box-shadow: 0 18px 50px #0008; }
+    .hero { padding: 28px 24px 24px; text-align: center; color: #fff8e4; background: linear-gradient(135deg, #592477, #c13b6e); }
+    .eyebrow { margin: 0 0 8px; color: #ffda71; font-size: .8rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: Georgia, serif; font-size: clamp(1.9rem, 8vw, 3rem); line-height: 1.05; }
+    .details { display: grid; gap: 7px; margin-top: 18px; padding: 13px; text-align: left; background: #32134899; border: 1px solid #f1d277; border-radius: 11px; line-height: 1.4; }
+    .details strong { color: #ffda71; }
+    form { padding: 24px; }
+    .intro { margin-top: 0; color: #735e72; line-height: 1.45; }
+    label { display: block; margin-top: 14px; font-weight: 800; }
+    input, select, button { width: 100%; margin-top: 7px; padding: 12px; font: inherit; border-radius: 9px; }
+    input, select { color: #24122d; background: #fff; border: 1px solid #cebfd2; }
+    input:focus, select:focus, button:focus-visible { outline: 3px solid #efbd5aaa; outline-offset: 2px; }
+    .hint { display: block; margin-top: 5px; color: #806d7b; font-size: .78rem; }
+    button { margin-top: 20px; color: #fff; background: #722b8d; border: 0; font-weight: 800; cursor: pointer; }
+    button:hover { background: #56206d; } button:disabled { background: #aaa; cursor: not-allowed; }
+    button.download { display: none; background: #c66a27; } button.download.visible { display: block; }
+    .notice { margin-top: 18px; padding: 12px; color: #6b4820; background: #fff4d8; border-left: 4px solid #e5aa39; border-radius: 6px; font-size: .86rem; line-height: 1.4; }
+    .payment { margin-top: 18px; padding: 15px; text-align: center; background: #f6ebfb; border: 1px solid #cda4dc; border-radius: 11px; }
+    .upi { display: inline-block; margin: 6px 0; padding: 7px 10px; color: #722b8d; background: #fff; border-radius: 6px; font-weight: 800; user-select: all; }
+    .copy { width: auto; margin: 4px 0 12px; padding: 8px 12px; background: #c66a27; font-size: .85rem; }
+    #paymentQr { display: inline-flex; min-width: 220px; min-height: 220px; align-items: center; justify-content: center; padding: 10px; background: #fff; border: 1px solid #cda4dc; border-radius: 8px; }
+    #paymentQr canvas, #paymentQr img { width: 200px; height: 200px; }
+    .confirmation { display: none; margin-top: 18px; padding: 15px; background: #edf9f0; border: 1px solid #8bc99d; border-radius: 11px; }
+    .confirmation.visible { display: block; } .confirmation h2 { margin: 0 0 6px; color: #18733d; font-size: 1.1rem; }
+    #status, #verifyStatus { min-height: 1.4em; line-height: 1.4; } #status.success, #verifyStatus.success { color: #18733d; } #status.error, #verifyStatus.error { color: #ad2533; } #status.info, #verifyStatus.info { color: #5e4d40; }
+    .footer { padding: 0 24px 22px; color: #806d7b; text-align: center; font-size: .8rem; }
+    .qr-source { position: fixed; left: -10000px; top: 0; width: 220px; height: 220px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <header class="hero">
+      <p class="eyebrow">SwimFit presents</p>
+      <h1>Dandiya Night 3.0</h1>
+      <div class="details">
+        <div><strong>Date:</strong> Friday, 16 October</div>
+        <div><strong>Venue:</strong> SwimFit Academy, Ratna Banquet, Akharaghat, Muzaffarpur</div>
+        <div><strong>Call:</strong> 9631712666</div>
+      </div>
+    </header>
+
+    <form id="form" novalidate>
+      <p class="intro">Register your details to receive a digital entry ticket. Candidate details are used for verification only and are not printed on the ticket.</p>
+      <label for="name">Full Name</label>
+      <input id="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Enter full name" />
+      <label for="mobile">Mobile Number</label>
+      <input id="mobile" type="tel" required pattern="[6-9][0-9]{9}" maxlength="10" inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number" />
+      <label for="email">Email Address <span class="hint" style="display:inline">(optional)</span></label>
+      <input id="email" type="email" maxlength="254" autocomplete="email" placeholder="you@example.com" />
+      <label for="passType">Pass Type</label>
+      <select id="passType" required>
+        <option value="">Select pass type</option>
+        <option value="single" data-price="190">Single Pass — ₹190</option>
+        <option value="couple" data-price="351">Couple Pass — ₹351</option>
+        <option value="family" data-price="910">Family Pass — ₹910</option>
+      </select>
+      <label for="quantity">Number of Passes</label>
+      <input id="quantity" type="number" required min="1" max="20" step="1" value="1" />
+      <section class="payment" aria-live="polite">
+        <strong>Payment via UPI</strong><br />
+        UPI ID: <span id="upiId" class="upi">placementempire@slc</span><br />
+        <button id="copyUpi" class="copy" type="button">Copy UPI ID</button>
+        <div id="paymentQr">Select a pass type to generate payment QR.</div>
+        <p>Total: <strong id="totalAmount">₹0</strong></p>
+      </section>
+      <label for="utr">Payment UTR / Reference Number</label>
+      <input id="utr" required minlength="6" maxlength="40" pattern="[A-Za-z0-9-]+" autocomplete="off" placeholder="Enter UTR after payment" />
+      <small class="hint">Candidate information is stored in the backend for verification but will not appear on the PDF ticket.</small>
+      <button id="submitBtn" type="submit">Generate Ticket</button>
+      <button id="downloadBtn" class="download" type="button">Download Ticket PDF</button>
+      <p id="status" role="status" aria-live="polite"></p>
+      <section id="confirmation" class="confirmation">
+        <h2>Ticket Generated</h2>
+        <p>Your ticket contains a QR code for admin scanning. Keep this ticket safe.</p>
+        <strong>Ticket ID: <span id="ticketId"></span></strong>
+        <button id="checkBtn" type="button">Check Ticket Status</button>
+        <p id="verifyStatus" role="status" aria-live="polite"></p>
+      </section>
+    </form>
+    <div class="footer">SwimFit presents Dandiya Night 3.0<br />For assistance: 9631712666</div>
+  </main>
+
+  <script>
+    'use strict';
+    const BACKEND_URL = 'PASTE_YOUR_SWIMFIT_APPS_SCRIPT_EXEC_URL_HERE';
+    const UPI_ID = 'placementempire@slc';
+    const PRICES = { single: 190, couple: 351, family: 910 };
+    const PASS_LABELS = { single: 'Single Pass', couple: 'Couple Pass', family: 'Family Pass' };
+    const form = document.getElementById('form');
+    const submitBtn = document.getElementById('submitBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const checkBtn = document.getElementById('checkBtn');
+    const status = document.getElementById('status');
+    const verifyStatus = document.getElementById('verifyStatus');
+    const confirmation = document.getElementById('confirmation');
+    let currentBlob = null; let currentFilename = ''; let currentTicketId = '';
+    const $ = id => document.getElementById(id);
+    function setStatus(message, type = 'info') { status.textContent = message; status.className = type; }
+    function selectedPayment() { const key = $('passType').value; const quantity = Math.max(1, Math.min(20, Number.parseInt($('quantity').value, 10) || 1)); return { key, quantity, unitPrice: PRICES[key] || 0, total: (PRICES[key] || 0) * quantity }; }
+    function updatePaymentQr() {
+      const p = selectedPayment(); $('quantity').value = p.quantity; $('totalAmount').textContent = `₹${p.total}`; const box = $('paymentQr'); box.replaceChildren();
+      if (!p.key) { box.textContent = 'Select a pass type to generate payment QR.'; return; }
+      if (typeof QRCode !== 'function') { box.textContent = 'Payment QR library loading…'; return; }
+      const payload = new URLSearchParams({ pa: UPI_ID, pn: 'Placement Empire', am: p.total.toFixed(2), cu: 'INR', tn: `SwimFit Dandiya ${PASS_LABELS[p.key]} x${p.quantity}` });
+      new QRCode(box, { text: `upi://pay?${payload.toString()}`, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M });
+    }
+    function backendUrl() {
+      if (BACKEND_URL.includes('PASTE_YOUR_') || !/^https:\/\/script\.google\.com\/macros\/s\/[^\s/]+\/exec$/.test(BACKEND_URL)) throw new Error('Configure the SwimFit Apps Script /exec URL in this HTML file.');
+      return BACKEND_URL;
+    }
+    async function post(payload) {
+      let response;
+      try { response = await fetch(backendUrl(), { method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) }); }
+      catch (e) { throw new Error('Cannot reach the Apps Script backend. Check the deployed /exec URL and Web App access.'); }
+      let result; try { result = await response.json(); } catch (e) { throw new Error('Backend did not return JSON. Redeploy the latest SwimFit backend.'); }
+      if (!result.ok) throw new Error(result.error || 'Backend request failed.'); return result;
+    }
+    async function qrDataUrl(payload) {
+      if (typeof QRCode !== 'function') throw new Error('QR library unavailable. Reload the page.');
+      const box = document.createElement('div'); box.className = 'qr-source'; document.body.appendChild(box);
+      try { new QRCode(box, { text: payload, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M }); await new Promise(r => requestAnimationFrame(r)); const canvas = box.querySelector('canvas'); if (!canvas) throw new Error('QR code could not be generated.'); return canvas.toDataURL('image/png'); }
+      finally { box.remove(); }
+    }
+    async function createPdf(record) {
+      if (!window.jspdf || typeof window.jspdf.jsPDF !== 'function') throw new Error('PDF library unavailable. Reload the page.');
+      const qr = await qrDataUrl(JSON.stringify({ event: 'SwimFit Dandiya Night 3.0', ticketId: record.ticketId, name: record.name, mobile: record.mobile, email: record.email, passType: record.passType, quantity: record.quantity, date: 'Friday, 16 October', venue: 'SwimFit Academy, Ratna Banquet, Akharaghat, Muzaffarpur' }));
+      const { jsPDF } = window.jspdf; const doc = new jsPDF();
+      doc.setFillColor(89, 36, 119); doc.rect(0, 0, 210, 48, 'F'); doc.setTextColor(255, 248, 228); doc.setFontSize(22); doc.text('Dandiya Night 3.0', 105, 20, { align: 'center' }); doc.setFontSize(12); doc.text('SwimFit presents', 105, 31, { align: 'center' });
+      doc.setTextColor(36, 18, 45); doc.setFontSize(16); doc.text('ENTRY TICKET', 20, 72); doc.setFontSize(12); doc.text(`Ticket ID: ${record.ticketId}`, 20, 86); doc.addImage(qr, 'PNG', 142, 58, 48, 48); doc.setFontSize(8); doc.text('Scan for verification', 142, 111);
+      doc.setFontSize(11); doc.text('Friday, 16 October', 20, 108); doc.text('SwimFit Academy, Ratna Banquet,', 20, 120); doc.text('Akharaghat, Muzaffarpur', 20, 131); doc.text('Call: 9631712666', 20, 144); doc.text(`${PASS_LABELS[record.passKey]} x${record.quantity} | Total: INR ${record.totalAmount}`, 20, 156); doc.setTextColor(111, 69, 119); doc.text('Valid after admin QR verification', 20, 172); doc.setFontSize(9); doc.text('Candidate details are intentionally not printed on this ticket.', 20, 186);
+      return doc.output('blob');
+    }
+    function download() { if (!currentBlob) return setStatus('Generate a ticket first.', 'error'); const url = URL.createObjectURL(currentBlob); const a = document.createElement('a'); a.href = url; a.download = currentFilename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+    form.addEventListener('submit', async e => {
+      e.preventDefault(); if (!form.reportValidity()) { setStatus('Please complete the required fields.', 'error'); return; }
+      submitBtn.disabled = true; setStatus('Saving registration and generating ticket…');
+      const payment = selectedPayment(); const record = { name: $('name').value.trim(), mobile: $('mobile').value.trim(), email: $('email').value.trim(), passKey: payment.key, passType: PASS_LABELS[payment.key], quantity: payment.quantity, totalAmount: payment.total, utr: $('utr').value.trim() };
+      try { const saved = await post({ action: 'register', ...record }); record.ticketId = saved.ticketId; currentTicketId = saved.ticketId; currentBlob = await createPdf(record); currentFilename = `${record.ticketId}.pdf`; $('ticketId').textContent = record.ticketId; confirmation.classList.add('visible'); downloadBtn.classList.add('visible'); download(); setStatus('Ticket generated and downloaded.', 'success'); }
+      catch (error) { setStatus(error.message, 'error'); } finally { submitBtn.disabled = false; }
+    });
+    downloadBtn.addEventListener('click', download);
+    $('passType').addEventListener('change', updatePaymentQr); $('quantity').addEventListener('input', updatePaymentQr); window.addEventListener('load', updatePaymentQr);
+    $('copyUpi').addEventListener('click', async () => { try { await navigator.clipboard.writeText(UPI_ID); $('copyUpi').textContent = 'UPI ID Copied'; setTimeout(() => $('copyUpi').textContent = 'Copy UPI ID', 1800); } catch (e) { setStatus(`Copy failed. Please copy manually: ${UPI_ID}`, 'error'); } });
+    checkBtn.addEventListener('click', async () => { verifyStatus.className = 'info'; verifyStatus.textContent = 'Checking ticket status…'; try { const r = await post({ action: 'customerStatus', ticketId: currentTicketId, mobile: $('mobile').value.trim() }); verifyStatus.textContent = r.paymentStatus === 'VERIFIED' ? 'Ticket verified by SwimFit admin.' : `Current status: ${r.paymentStatus}`; verifyStatus.className = r.paymentStatus === 'VERIFIED' ? 'success' : 'info'; } catch (e) { verifyStatus.textContent = e.message; verifyStatus.className = 'error'; } });
+  </script>
+</body>
+</html>
